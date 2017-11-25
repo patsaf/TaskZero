@@ -1,7 +1,5 @@
 package taskzero;
 
-import com.sun.media.sound.InvalidFormatException;
-
 import java.util.regex.Pattern;
 
 public class Person implements Comparable<Person> {

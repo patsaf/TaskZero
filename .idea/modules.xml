@@ -2,9 +2,9 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TaskZero.iml" filepath="$PROJECT_DIR$/.idea/modules/TaskZero.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TaskZero_main.iml" filepath="$PROJECT_DIR$/.idea/modules/TaskZero_main.iml" group="TaskZero" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/TaskZero_test.iml" filepath="$PROJECT_DIR$/.idea/modules/TaskZero_test.iml" group="TaskZero" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JakSieMasz.iml" filepath="$PROJECT_DIR$/.idea/modules/JakSieMasz.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JakSieMasz_main.iml" filepath="$PROJECT_DIR$/.idea/modules/JakSieMasz_main.iml" group="JakSieMasz" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/JakSieMasz_test.iml" filepath="$PROJECT_DIR$/.idea/modules/JakSieMasz_test.iml" group="JakSieMasz" />
     </modules>
   </component>
 </project>

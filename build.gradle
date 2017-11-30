@@ -1,14 +1,14 @@
-group 'com.patrycja.example'
+group 'com.example.patrycja'
 version '1.0-SNAPSHOT'
 
 apply plugin: 'java'
 
 jar {
     manifest {
-        attributes 'Main-Class': 'taskzero.MainClass'
+        attributes 'Main-Class': 'company.MainClass'
     }
-
 }
+
 sourceCompatibility = 1.8
 
 repositories {
@@ -17,62 +17,6 @@ repositories {
 
 dependencies {
     compile 'com.google.guava:guava:23.5-jre'
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-group 'com.patrycja.example'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-group 'com.example.patrycja'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-group 'com.example.patrycja'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    testCompile group: 'junit', name: 'junit', version: '4.12'
-}
-group 'com.example.patrycja'
-version '1.0-SNAPSHOT'
-
-apply plugin: 'java'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
 }
 
 dependencies {

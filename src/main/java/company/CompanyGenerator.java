@@ -20,7 +20,7 @@ public class CompanyGenerator {
         int temp;
         for (int i=0; i<ceoCapacity; i++) {
             temp = r.nextInt(managerCapacity)+1;
-            TeamManager manager = new TeamManager(EmployeeRole.DEVELOPMENTMANAGER, temp);
+            TeamManager manager = new TeamManager(EmployeeRole.DEVELOPMENT_MANAGER, temp);
             hireDevelopers(temp, manager);
             ceo.hire(manager);
         }
@@ -36,30 +36,29 @@ public class CompanyGenerator {
 
     public void assignRandomly() {
         Task task;
-        int randomIndex;
         for(int i=0; i<r.nextInt(10); i++) {
-            randomIndex = r.nextInt(ceo.getList().getSize());
-            task = new Task(ceo.getList().getEmployee(randomIndex), r.nextInt(20), randomIndex);
+            task = new Task(new ManagerTaskFactory().getTaskName(), r.nextInt(20));
             ceo.assign(task);
         }
 
         for(int j=0; j<ceo.getList().getSize(); j++) {
             TeamManager manager = (TeamManager) ceo.getList().getEmployee(j);
-            for (int i = 0; i < r.nextInt(15); i++) {
-                randomIndex = r.nextInt(manager.getList().getSize());
-                task = new Task(manager.getList().getEmployee(randomIndex), r.nextInt(20), randomIndex);
+            for (int i=0; i<r.nextInt(15); i++) {
+                task = new Task(new TaskFactory().getTaskName(), r.nextInt(20));
                 manager.assign(task);
             }
         }
     }
 
-    public void getReports() {
+    public void displayReports() {
         Report report;
         for(int i=0; i<ceo.getList().getSize(); i++) {
             TeamManager manager = (TeamManager) ceo.getList().getEmployee(i);
             report = manager.reportWork();
+            System.out.println(report);
             for(int j=0; j<manager.getList().getSize(); j++) {
                 report = manager.getList().getEmployee(j).reportWork();
+                System.out.println(report);
             }
         }
     }

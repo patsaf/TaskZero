@@ -1,6 +1,8 @@
 package company;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 public class EmployeeList {
@@ -12,6 +14,10 @@ public class EmployeeList {
     }
 
     public int getSize() { return list.size(); }
+
+    public void sort() {
+        Collections.sort(list, Comparator.comparingInt(Employee::getUnitsOfWork));
+    }
 
     public Employee getEmployee(int i) { return list.get(i); }
 
@@ -27,7 +33,7 @@ public class EmployeeList {
     public String toString() {
         String output = "\n";
         for(Employee e: list) {
-            output += "\t\t\"" + e.getRole() + "\"\n";
+            output += "\t\t\"" + e.getRole().name() + "\"\n";
         }
         return output;
     }

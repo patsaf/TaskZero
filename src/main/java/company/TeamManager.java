@@ -1,24 +1,27 @@
 package company;
 
+import java.util.Random;
+
 public class TeamManager extends AbstractEmployee implements Manager {
 
     private final EmployeeList list;
+    private final int capacity;
+    private final Random r = new Random();
 
     public TeamManager(EmployeeRole role, int capacity) {
-        super(EmployeeType.MANAGER, role, capacity);
+        super(EmployeeType.MANAGER, role);
         list = new EmployeeList();
+        this.capacity = capacity;
     }
 
     public EmployeeList getList() { return list; }
 
     @Override
     public void assign(Task task) {
-            System.out.println("********* ASSIGNMENT **********");
-            System.out.println("Assigned by: " + getRole());
-            System.out.println("Assigned to: " + list.getEmployee(task.getEmployeeIndex()).getRole());
-            System.out.println("TASK: " + task.getTask() + " - " + task.getUnitsOfWork() + " units of work\n");
-            Employee employee = list.getEmployee(task.getEmployeeIndex());
-            if(employee.getRole() == EmployeeRole.DEVELOPMENTMANAGER) {
+            list.sort();
+            Employee employee = list.getEmployee(0);
+            if(employee.getRole() == EmployeeRole.DEVELOPMENT_MANAGER) {
+                employee.getReport().addReport(task);
                 employee.setUnitsOfWork(task.getUnitsOfWork());
             } else {
                 employee.assign(task);
@@ -41,26 +44,18 @@ public class TeamManager extends AbstractEmployee implements Manager {
 
     @Override
     public boolean canHire() {
-        if(list.getSize() < getCapacity()) {
+        if(list.getSize() < capacity) {
             return true;
         }
         return false;
     }
 
     @Override
-    public Report reportWork() {
-        return new Report(this, getUnitsOfWork());
-    }
-
-    @Override
     public String toString() {
-        switch(getRole()) {
-            case CEO:
-                return "\"" + getRole() + "\" {";
-            case DEVELOPMENTMANAGER:
-                return "\t\"" + getRole() + "\" {" + list + "\t}";
-            default:
-                throw new IllegalArgumentException();
+        if(getRole() == EmployeeRole.CEO) {
+            return "\"" + getRole().name() + "\" {";
+        } else {
+            return "\t\"" + getRole().name() + "\" {" + list + "\t}";
         }
     }
 }

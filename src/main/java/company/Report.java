@@ -2,8 +2,17 @@ package company;
 
 public class Report {
 
-    public Report(Employee employee, int units) {
-        System.out.println("******** REPORT *********");
-        System.out.println("Work completed by " + employee.getRole() + " " + units + " units of work\n");
+    private final TaskList taskList;
+
+    public Report() {
+        taskList = new TaskList();
+    }
+
+    public void addReport(Task task) {
+        taskList.addTask(task);
+    }
+
+    public String toString() {
+        return taskList.toString();
     }
 }

@@ -7,10 +7,11 @@ public class MainClass {
      * arg[1] is the maximum number of developers each manager can employ
      */
     public static void main(String[] args) {
+        //TODO: modify CompanyGenerator so it generates an instance of Company
         CompanyGenerator company = new CompanyGenerator(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
         company.display();
         company.assignRandomly();
-        company.getReports();
+        company.displayReports();
     }
 
 }

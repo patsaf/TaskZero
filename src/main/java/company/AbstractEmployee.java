@@ -4,17 +4,15 @@ public abstract class AbstractEmployee implements Employee {
 
     private final EmployeeType type;
     private final EmployeeRole role;
-    private final int capacity;
     private int unitsOfWork;
+    Report report;
 
-    public AbstractEmployee(EmployeeType type, EmployeeRole role, int capacity) {
+    public AbstractEmployee(EmployeeType type, EmployeeRole role) {
         this.type = type;
         this.role = role;
-        this.capacity = capacity;
         unitsOfWork = 0;
+        report = new Report();
     }
-
-    public int getCapacity() { return capacity; }
 
     @Override
     public EmployeeType getType() {
@@ -26,6 +24,7 @@ public abstract class AbstractEmployee implements Employee {
         return role;
     }
 
+    @Override
     public int getUnitsOfWork() {
         return unitsOfWork;
     }
@@ -33,5 +32,15 @@ public abstract class AbstractEmployee implements Employee {
     @Override
     public void setUnitsOfWork(int i) {
         unitsOfWork += i;
+    }
+
+    @Override
+    public Report getReport() { return report; }
+
+    @Override
+    public Report reportWork() {
+        System.out.println("Work reported by: " + getRole().name());
+        System.out.println("All work completed: "+ getUnitsOfWork() + " units");
+        return report;
     }
 }

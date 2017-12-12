@@ -1,4 +1,4 @@
-package company;
+package company.tasks;
 
 import java.util.Random;
 

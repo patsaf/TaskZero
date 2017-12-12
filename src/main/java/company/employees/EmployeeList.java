@@ -1,4 +1,4 @@
-package company;
+package company.employees;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -25,16 +25,14 @@ public class EmployeeList {
         list.add(employee);
     }
 
-    public void removeEmployee(Employee employee) {
-        list.remove(employee);
-    }
+    public void removeEmployee(Employee employee) { list.remove(employee); }
 
     @Override
     public String toString() {
         String output = "\n";
         for(Employee e: list) {
-            output += "\t\t\"" + e.getRole().name() + "\"\n";
+            output += e;
         }
-        return output;
+        return output + "\n";
     }
 }

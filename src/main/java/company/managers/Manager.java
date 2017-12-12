@@ -1,5 +1,6 @@
-package company;
+package company.managers;
 
+import company.employees.Employee;
 
 public interface Manager extends Employee {
 
@@ -7,7 +8,7 @@ public interface Manager extends Employee {
 
     void fire(Employee employee);
 
-    boolean canHire();
+    boolean canHire(Employee employee);
 
 }
 

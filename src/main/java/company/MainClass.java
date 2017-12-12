@@ -1,5 +1,7 @@
 package company;
 
+import company.reports.Report;
+
 public class MainClass {
 
     /**
@@ -7,11 +9,12 @@ public class MainClass {
      * arg[1] is the maximum number of developers each manager can employ
      */
     public static void main(String[] args) {
-        //TODO: modify CompanyGenerator so it generates an instance of Company
-        CompanyGenerator company = new CompanyGenerator(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
-        company.display();
-        company.assignRandomly();
-        company.displayReports();
+        //generates a random company, hires employees and distributes work
+        CompanyGenerator companyGenerator = new CompanyGenerator(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        companyGenerator.assignRandomly();
+        Report report = companyGenerator.getReports();
+        companyGenerator.display();
+        System.out.println(report);
     }
 
 }

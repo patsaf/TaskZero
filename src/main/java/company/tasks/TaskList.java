@@ -1,4 +1,4 @@
-package company;
+package company.tasks;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +11,14 @@ public class TaskList {
         listOfTasks = new ArrayList<>();
     }
 
-    public int getSize() {
-        return listOfTasks.size();
-    }
-
-    public void addTask(Task task) {
+    public void add(Task task) {
         listOfTasks.add(task);
-    }
-
-    public Task getTask(int i) {
-        return listOfTasks.get(i);
     }
 
     public String toString() {
         String output = "";
         for(Task t: listOfTasks) {
-            output += t.getTask() + ": " + t.getUnitsOfWork() + " units of work\n";
+            output += t + "\n";
         }
         return output;
     }

@@ -1,4 +1,4 @@
-package company;
+package company.tasks;
 
 public class Task {
 
@@ -10,10 +10,10 @@ public class Task {
         this.unitsOfWork = unitsOfWork;
     }
 
-    public String getTask() {
-        return taskName;
-    }
-
     public int getUnitsOfWork() { return unitsOfWork; }
 
+    @Override
+    public String toString() {
+        return "{ " + taskName + ", unitsOfWork = " + unitsOfWork + " }";
+    }
 }

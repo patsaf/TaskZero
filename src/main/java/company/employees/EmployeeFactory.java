@@ -1,8 +1,10 @@
 package company.employees;
 
+import company.employees.details.*;
 import company.managers.TeamManager;
 
 import java.util.Random;
+import java.util.function.Predicate;
 
 public class EmployeeFactory {
 
@@ -19,28 +21,31 @@ public class EmployeeFactory {
     private final String[] countries = {"Polska", "Ukraina", "Rosja", "USA", "Hiszpania", "Francja", "Wielka Brytania",
             "Portugalia", "Niemcy", "Ekwador", "Kolumbia", "Norwegia", "Szwecja", "Dania", "Islandia", "Irlandia",
             "Czechy", "Argentyna", "Brazylia", "Meksyk"};
-    private final char[] genders = {'K', 'M'};
+    private final String[] domains = {"op.pl", "gmail.com", "domena.xd", "wp.pl"};
     private Employee employee;
     private final Random r = new Random();
 
     public EmployeeFactory(EmployeeType type, EmployeeRole role, int capacity) {
-        char g = generate(genders);
+        Gender g = generateGender();
         if(type == EmployeeType.MANAGER) {
             employee = new TeamManager.ManagerBuilder(role)
                     .capacity(capacity)
-                    .name((g=='K' ? generate(femaleNames) : generate(maleNames)), generate(lastNames))
-                    .university(generate(universities))
                     .gender(g)
-                    .country(generate(countries))
-                    .email(generate(emails))
+                    .name((g.equals(Gender.FEMALE) ? new FirstName(generate(femaleNames)) :
+                            new FirstName(generate(maleNames))), new LastName(generate(lastNames)))
+                    .university(new University(generate(universities)))
+                    .country(new Country(generate(countries)))
+                    .email(new Email(generate(emails)))
+                    .hiringCondition(generatePredicate(Predicates.values()[r.nextInt(Predicates.values().length)]))
                     .build();
         } else {
             employee = new Developer.DeveloperBuilder(role)
-                    .name((g=='K' ? generate(femaleNames) : generate(maleNames)), generate(lastNames))
-                    .university(generate(universities))
+                    .name((g.equals(Gender.FEMALE) ? new FirstName(generate(femaleNames))
+                            : new FirstName(generate(maleNames))), new LastName(generate(lastNames)))
+                    .university(new University(generate(universities)))
                     .gender(g)
-                    .country(generate(countries))
-                    .email(generate(emails))
+                    .country(new Country(generate(countries)))
+                    .email(new Email(generate(emails)))
                     .build();
         }
     }
@@ -52,8 +57,27 @@ public class EmployeeFactory {
         return table[r.nextInt(n)];
     }
 
-    private char generate(char[] table) {
-        int n = table.length;
-        return table[r.nextInt(n)];
+    private Gender generateGender() {
+        return Gender.values()[r.nextInt(Gender.values().length)];
+    }
+
+    private Predicate<Employee> generatePredicate(Predicates condition){
+        switch(condition) {
+
+            case EMPTY:
+                return PredicateFactory.noCondition();
+            case GENDER:
+                return PredicateFactory.chooseGender(generateGender());
+            case COUNTRY:
+                return PredicateFactory.chooseCountry(new Country(generate(countries)));
+            case UNIVERSITY:
+                return PredicateFactory.chooseUniversity(new University(generate(universities)));
+            case EMAIL:
+                return PredicateFactory.chooseEmailDomain(generate(domains));
+            case ROLE:
+                return PredicateFactory.chooseRole(EmployeeRole.values()[r.nextInt(EmployeeRole.values().length)]);
+            default:
+                return PredicateFactory.noCondition();
+        }
     }
 }

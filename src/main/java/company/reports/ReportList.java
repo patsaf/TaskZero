@@ -1,6 +1,7 @@
 package company.reports;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ReportList {
@@ -11,24 +12,9 @@ public class ReportList {
         listOfReports = new ArrayList<>();
     }
 
-    public void addReport(Report report) {
+    public void add(Report report) {
         listOfReports.add(report);
-    }
-
-    public void sort() {
-        listOfReports.sort((o1,o2) -> {
-            int cmp = o1.getLastName().compareTo(o2.getLastName());
-            if(cmp==0) {
-                cmp = o1.getFirstName().compareTo(o2.getFirstName());
-            }
-            if(cmp==0) {
-                cmp = o1.getRole().name().compareTo(o2.getRole().name());
-            }
-            if(cmp==0) {
-                Integer.compare(o1.getUnitsOfWork(), o2.getUnitsOfWork());
-            }
-            return cmp;
-        });
+        Collections.sort(listOfReports);
     }
 
     @Override

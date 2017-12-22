@@ -1,37 +1,44 @@
 package company.managers;
 
 import company.employees.*;
+import company.employees.details.EmployeeRole;
+import company.employees.details.EmployeeType;
 import company.reports.Report;
+import company.reports.ReportList;
 import company.tasks.Task;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.function.Predicate;
 
 public class TeamManager extends AbstractEmployee implements Manager {
 
     private final EmployeeList list;
     private final int capacity;
-    private final Report report;
+    private final Predicate<Employee> hiringCondition;
 
     public TeamManager(ManagerBuilder builder) {
         super(builder);
         list = new EmployeeList();
         this.capacity = builder.capacity;
-        report = new Report(getFirstName(), getLastName(), getRole(), getUnitsOfWork());
+        this.hiringCondition = builder.hiringCondition;
     }
 
     public int getListSize() { return list.getSize(); }
+
+    public Predicate<Employee> getHiringCondition() {
+        return hiringCondition;
+    }
 
     public Employee getListEmployee(int i) { return list.getEmployee(i);   }
 
     @Override
     public void assign(Task task) {
             list.sort();
-            Employee employee = list.getEmployee(0);
-            if(employee.getType() == EmployeeType.MANAGER) {
-                employee.reportWork().addReport(task);
-                employee.setUnitsOfWork(task.getUnitsOfWork());
+            if(list.getEmployee(0).getType() == EmployeeType.MANAGER) {
+                TeamManager manager = (TeamManager) list.getEmployee(0);
+                manager.getTaskList().add(task);
+                manager.setUnitsOfWork(task.getUnitsOfWork());
             } else {
+                Employee employee =  list.getEmployee(0);
                 employee.assign(task);
             }
     }
@@ -40,9 +47,6 @@ public class TeamManager extends AbstractEmployee implements Manager {
     public void hire(Employee employee) {
         if(canHire(employee)) {
             list.addEmployee(employee);
-        } else {
-            Logger log = Logger.getLogger(getClass().getName());
-            log.log(Level.WARNING, "Your team is full!");
         }
     }
 
@@ -53,28 +57,26 @@ public class TeamManager extends AbstractEmployee implements Manager {
 
     @Override
     public boolean canHire(Employee employee) {
-        if(list.getSize() < capacity) {
-            return true;
-        }
-        return false;
+        return (list.getSize() < capacity) && (hiringCondition.test(employee));
     }
 
     @Override
     public Report reportWork() {
         TeamManager manager;
         Employee employee;
+        ReportList reportList = new ReportList();
         if(getRole() == EmployeeRole.CEO) {
             for(int i=0; i<list.getSize(); i++) {
                 manager = (TeamManager) list.getEmployee(i);
-                report.ceoReport(manager.reportWork());
+                reportList.add(new Report(manager));
                 for(int j=0; j<manager.getListSize();j++) {
                     employee = manager.getListEmployee(j);
-                    report.ceoReport(employee.reportWork());
+                    reportList.add(new Report(employee));
                 }
             }
-            report.getReportList().sort();
+            return new Report(this, reportList);
         }
-        return report;
+        return new Report(this);
     }
 
     @Override
@@ -85,19 +87,26 @@ public class TeamManager extends AbstractEmployee implements Manager {
         return output;
     }
 
-    public static class ManagerBuilder<T extends ManagerBuilder<T>> extends AbstractEmployee.Builder {
+    public static class ManagerBuilder extends AbstractEmployee.Builder<ManagerBuilder> {
+
         private int capacity;
+        private Predicate<Employee> hiringCondition;
 
         public ManagerBuilder(EmployeeRole role) {
             super(EmployeeType.MANAGER, role);
         }
 
-        protected ManagerBuilder self() {
+        public ManagerBuilder self() {
             return this;
         }
 
         public ManagerBuilder capacity(int capacity) {
             this.capacity = capacity;
+            return self();
+        }
+
+        public ManagerBuilder hiringCondition(Predicate<Employee> predicate) {
+            this.hiringCondition = predicate;
             return self();
         }
 

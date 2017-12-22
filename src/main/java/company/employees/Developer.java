@@ -1,26 +1,26 @@
 package company.employees;
 
+import company.employees.details.EmployeeRole;
+import company.employees.details.EmployeeType;
 import company.reports.Report;
 import company.tasks.Task;
 
 public class Developer extends AbstractEmployee implements Employee {
 
-    private final Report report;
 
     public Developer(DeveloperBuilder builder) {
         super(builder);
-        report = new Report(getFirstName(), getLastName(), getRole(), getUnitsOfWork());
     }
 
     @Override
     public void assign(Task task){
-        report.addReport(task);
+        getTaskList().add(task);
         setUnitsOfWork(task.getUnitsOfWork());
     }
 
     @Override
     public Report reportWork() {
-        return report;
+        return new Report(this);
     }
 
     public static class DeveloperBuilder extends AbstractEmployee.Builder {

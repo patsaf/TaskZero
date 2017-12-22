@@ -1,7 +1,9 @@
 package company.employees;
 
+import company.employees.details.*;
 import company.reports.Report;
 import company.tasks.Task;
+import company.tasks.TaskList;
 
 public interface Employee {
 
@@ -11,19 +13,19 @@ public interface Employee {
     
     int getUnitsOfWork();
 
-    String getFirstName();
+    FirstName getFirstName();
 
-    String getLastName();
+    LastName getLastName();
 
-    String getEmail();
+    Email getEmail();
 
-    char getGender();
+    Gender getGender();
 
-    String getCountry();
+    Country getCountry();
 
-    String getUniversity();
+    University getUniversity();
 
-    void setUnitsOfWork(int i);
+    TaskList getTaskList();
 
     void assign(Task task);
 

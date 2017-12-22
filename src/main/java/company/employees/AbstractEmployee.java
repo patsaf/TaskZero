@@ -1,49 +1,32 @@
 package company.employees;
 
-import java.util.regex.Pattern;
+import company.employees.details.*;
+import company.tasks.TaskList;
 
 public abstract class AbstractEmployee implements Employee {
 
     private final EmployeeType type;
     private final EmployeeRole role;
-    private final String firstName;
-    private final String lastName;
-    private final String university;
-    private final char gender;
-    private final String country;
-    private final String email;
+    private final FirstName firstName;
+    private final LastName lastName;
+    private final University university;
+    private final Gender gender;
+    private final Country country;
+    private final Email email;
     private int unitsOfWork;
+    private final TaskList taskList;
 
     public AbstractEmployee(Builder builder) {
         this.type = builder.type;
         this.role = builder.role;
         this.university = builder.university;
         this.country = builder.country;
+        this.gender = builder.gender;
         unitsOfWork = 0;
-
-        if (Pattern.matches("[A-Z][a-z]+", builder.firstName)) {
-            this.firstName = builder.firstName;
-        } else {
-            throw new IllegalArgumentException();
-        }
-
-        if (Pattern.matches("[A-Z][a-z]+", builder.lastName)) {
-            this.lastName = builder.lastName;
-        } else {
-            throw new IllegalArgumentException();
-        }
-
-        if (Pattern.matches("[a-z0-9_-]+@[a-z]+\\.[a-z]{2,3}", builder.email)) {
-            this.email = builder.email;
-        } else {
-            throw new IllegalArgumentException();
-        }
-
-        if ((builder.gender == 'K') || (builder.gender == 'M')) {
-            this.gender = builder.gender;
-        } else {
-            throw new IllegalArgumentException();
-        }
+        taskList = new TaskList();
+        this.firstName = builder.firstName;
+        this.lastName = builder.lastName;
+        this.email = builder.email;
     }
 
     @Override
@@ -61,28 +44,30 @@ public abstract class AbstractEmployee implements Employee {
         return unitsOfWork;
     }
 
-    @Override
-    public void setUnitsOfWork(int i) {
+    protected void setUnitsOfWork(int i) {
         unitsOfWork += i;
     }
 
     @Override
-    public String getFirstName() { return firstName; }
+    public TaskList getTaskList() { return taskList;  }
 
     @Override
-    public String getLastName() { return lastName; }
+    public FirstName getFirstName() { return firstName; }
 
     @Override
-    public String getUniversity() { return university; }
+    public LastName getLastName() { return lastName; }
 
     @Override
-    public char getGender() { return gender; }
+    public University getUniversity() { return university; }
 
     @Override
-    public String getCountry() { return country; }
+    public Gender getGender() { return gender; }
 
     @Override
-    public String getEmail() { return email; }
+    public Country getCountry() { return country; }
+
+    @Override
+    public Email getEmail() { return email; }
 
     @Override
     public String toString() {
@@ -95,12 +80,12 @@ public abstract class AbstractEmployee implements Employee {
 
         private  EmployeeType type;
         private  EmployeeRole role;
-        private  String firstName;
-        private  String lastName;
-        private  String university;
-        private  char gender;
-        private  String country;
-        private  String email;
+        private  FirstName firstName;
+        private  LastName lastName;
+        private  University university;
+        private  Gender gender;
+        private  Country country;
+        private  Email email;
 
         protected abstract T self();
 
@@ -109,35 +94,33 @@ public abstract class AbstractEmployee implements Employee {
             this.type = type;
         }
 
-        public T name(String firstName, String lastName) {
+        public T name(FirstName firstName, LastName lastName) {
             this.firstName = firstName;
             this.lastName = lastName;
             return self();
         }
 
-        public T university(String university) {
+        public T university(University university) {
             this.university = university;
             return self();
         }
 
-        public T gender(char gender) {
+        public T gender(Gender gender) {
             this.gender = gender;
             return self();
         }
 
-        public T country(String country) {
+        public T country(Country country) {
             this.country = country;
             return self();
         }
 
-        public T email(String email) {
+        public T email(Email email) {
             this.email = email;
             return self();
         }
 
         public abstract Employee build();
-
-        public T capacity(int capacity) { return self(); }
     }
 }
 

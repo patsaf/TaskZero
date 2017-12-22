@@ -1,43 +1,47 @@
 package company.reports;
 
-import company.employees.EmployeeRole;
-import company.tasks.Task;
+import com.google.common.collect.ComparisonChain;
+import company.employees.Employee;
+import company.employees.details.EmployeeRole;
+import company.employees.details.FirstName;
+import company.employees.details.LastName;
 import company.tasks.TaskList;
 
-public class Report {
+public class Report implements Comparable<Report> {
 
     private final TaskList taskList;
-    private final String firstName;
-    private final String lastName;
+    private final FirstName firstName;
+    private final LastName lastName;
     private final EmployeeRole role;
     private final int unitsOfWork;
     private final ReportList reportList;
 
-    public Report(String firstName, String lastName, EmployeeRole role, int unitsOfWork) {
+    public Report(Employee employee) {
 
-        taskList = new TaskList();
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.role = role;
-        this.unitsOfWork = unitsOfWork;
+        this.taskList = employee.getTaskList();
+        this.firstName = employee.getFirstName();
+        this.lastName = employee.getLastName();
+        this.role = employee.getRole();
+        this.unitsOfWork = employee.getUnitsOfWork();
         reportList = new ReportList();
     }
 
-    public void addReport(Task task) {
-        taskList.add(task);
+    public Report(Employee employee, ReportList reportList) {
+        this.taskList = employee.getTaskList();
+        this.firstName = employee.getFirstName();
+        this.lastName = employee.getLastName();
+        this.role = employee.getRole();
+        this.unitsOfWork = employee.getUnitsOfWork();
+        this.reportList = reportList;
     }
 
-    public void ceoReport(Report report) { reportList.addReport(report);}
+    public FirstName getFirstName() { return firstName; }
 
-    public String getFirstName() { return firstName; }
-
-    public String getLastName() { return lastName; }
+    public LastName getLastName() { return lastName; }
 
     public EmployeeRole getRole() { return role; }
 
     public int getUnitsOfWork() { return unitsOfWork; }
-
-    public ReportList getReportList() { return reportList;  }
 
     @Override
     public String toString() {
@@ -48,5 +52,14 @@ public class Report {
                     ", all work completed: " + unitsOfWork + " units\n" +
                     taskList.toString();
         }
+    }
+
+    @Override
+    public int compareTo(Report r1) {
+        return ComparisonChain.start()
+                .compare(lastName.toString(), r1.getLastName().toString())
+                .compare(firstName.toString(), r1.getFirstName().toString())
+                .compare(getUnitsOfWork(), r1.getUnitsOfWork())
+                .result();
     }
 }

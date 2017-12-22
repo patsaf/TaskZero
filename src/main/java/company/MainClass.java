@@ -10,7 +10,8 @@ public class MainClass {
      */
     public static void main(String[] args) {
         //generates a random company, hires employees and distributes work
-        CompanyGenerator companyGenerator = new CompanyGenerator(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        //CompanyGenerator companyGenerator = new CompanyGenerator(Integer.parseInt(args[0]), Integer.parseInt(args[1]));
+        CompanyGenerator companyGenerator = new CompanyGenerator(2, 10);
         companyGenerator.assignRandomly();
         Report report = companyGenerator.getReports();
         companyGenerator.display();

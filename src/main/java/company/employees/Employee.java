@@ -27,7 +27,7 @@ public interface Employee {
 
     TaskList getTaskList();
 
-    void assign(Task task);
+    void assign(Task task, Employee employee);
 
     Report reportWork();
 }

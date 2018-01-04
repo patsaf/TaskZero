@@ -16,9 +16,9 @@ public class TaskList {
     }
 
     public String toString() {
-        String output = "";
+        String output = "All tasks completed: \n";
         for(Task t: listOfTasks) {
-            output += t + "\n";
+            output += "\t *" + t + "\n";
         }
         return output;
     }

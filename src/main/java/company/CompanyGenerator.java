@@ -35,7 +35,7 @@ public class CompanyGenerator {
                 temp = r.nextInt(managerCapacity) + 1;
                 manager = (TeamManager) new EmployeeFactory(EmployeeType.MANAGER,
                         EmployeeRole.DEVELOPMENT_MANAGER, temp).getEmployee();
-            } while(!ceo.getHiringCondition().test(manager));
+            } while(!ceo.makePredicate().test(manager));
                 temp = r.nextInt(managerCapacity) + 1;
                 //TeamManager manager =
                 hireDevelopers(temp, manager);
@@ -53,12 +53,12 @@ public class CompanyGenerator {
                         EmployeeRole.values()[r.nextInt(EmployeeRole.values().length - 2) + 2],
                         0).getEmployee();
 
-            } while(!manager.getHiringCondition().test(developer));
+            } while(!manager.makePredicate().test(developer));
                 manager.hire(developer);
         }
     }
 
-    public void assignRandomly() {
+    /*public void assignRandomly() {
         Task task;
         for(int i=0; i<r.nextInt(10); i++) {
             task = new Task(new ManagerTaskFactory().getTaskName(), r.nextInt(20));
@@ -71,7 +71,7 @@ public class CompanyGenerator {
                 manager.assign(task);
             }
         }
-    }
+    }*/
 
     public Report getReports() { return ceo.reportWork(); }
 

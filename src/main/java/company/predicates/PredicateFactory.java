@@ -1,6 +1,10 @@
-package company.employees.details;
+package company.predicates;
 
 import company.employees.Employee;
+import company.employees.details.Country;
+import company.employees.details.Gender;
+import company.employees.details.University;
+
 import java.util.function.Predicate;
 
 public final class PredicateFactory {
@@ -25,9 +29,5 @@ public final class PredicateFactory {
         return employee -> employee.getEmail()
                 .toString()
                 .endsWith(domain);
-    }
-
-    public static final Predicate<Employee> chooseRole(EmployeeRole role) {
-        return employee -> employee.getRole().equals(role);
     }
 }

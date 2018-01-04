@@ -49,7 +49,7 @@ public class Report implements Comparable<Report> {
             return reportList.toString();
         } else {
             return firstName + " " + lastName + ", " + role.name() +
-                    ", all work completed: " + unitsOfWork + " units\n" +
+                    "\nAll work completed: " + unitsOfWork + " units\n" +
                     taskList.toString();
         }
     }

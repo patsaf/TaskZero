@@ -1,8 +1,9 @@
 package company.managers;
 
 import company.employees.*;
-import company.employees.details.EmployeeRole;
-import company.employees.details.EmployeeType;
+import company.employees.details.*;
+import company.predicates.PredicateFactory;
+import company.predicates.PredicateInfo;
 import company.reports.Report;
 import company.reports.ReportList;
 import company.tasks.Task;
@@ -13,33 +14,29 @@ public class TeamManager extends AbstractEmployee implements Manager {
 
     private final EmployeeList list;
     private final int capacity;
-    private final Predicate<Employee> hiringCondition;
+    private final PredicateInfo conditionInfo;
 
     public TeamManager(ManagerBuilder builder) {
         super(builder);
         list = new EmployeeList();
         this.capacity = builder.capacity;
-        this.hiringCondition = builder.hiringCondition;
+        this.conditionInfo = builder.conditionInfo;
     }
 
     public int getListSize() { return list.getSize(); }
 
-    public Predicate<Employee> getHiringCondition() {
-        return hiringCondition;
-    }
-
     public Employee getListEmployee(int i) { return list.getEmployee(i);   }
 
     @Override
-    public void assign(Task task) {
+    public void assign(Task task, Employee employee) {
             list.sort();
-            if(list.getEmployee(0).getType() == EmployeeType.MANAGER) {
-                TeamManager manager = (TeamManager) list.getEmployee(0);
+            if(employee.getType() == EmployeeType.MANAGER) {
+                TeamManager manager = (TeamManager) employee;
                 manager.getTaskList().add(task);
                 manager.setUnitsOfWork(task.getUnitsOfWork());
             } else {
-                Employee employee =  list.getEmployee(0);
-                employee.assign(task);
+                //Employee employee =  list.getEmployee(0);
+                employee.assign(task, null);
             }
     }
 
@@ -57,7 +54,7 @@ public class TeamManager extends AbstractEmployee implements Manager {
 
     @Override
     public boolean canHire(Employee employee) {
-        return (list.getSize() < capacity) && (hiringCondition.test(employee));
+        return (list.getSize() < capacity) && (makePredicate().test(employee));
     }
 
     @Override
@@ -79,18 +76,51 @@ public class TeamManager extends AbstractEmployee implements Manager {
         return new Report(this);
     }
 
+    public Predicate<Employee> makePredicate(){
+        switch(conditionInfo.getCondition()) {
+
+            case EMPTY:
+                return PredicateFactory.noCondition();
+            case GENDER:
+                Gender g = null;
+                for(Gender x : Gender.values()) {
+                    if(x.name().equalsIgnoreCase(conditionInfo.getConditionDetails())) {
+                        g = x;
+                    }
+                }
+                return PredicateFactory.chooseGender(g);
+            case COUNTRY:
+                return PredicateFactory.chooseCountry(new Country(conditionInfo.getConditionDetails()));
+            case UNIVERSITY:
+                return PredicateFactory.chooseUniversity(new University(conditionInfo.getConditionDetails()));
+            case EMAIL:
+                return PredicateFactory.chooseEmailDomain(conditionInfo.getConditionDetails());
+            default:
+                return PredicateFactory.noCondition();
+        }
+    }
+
     @Override
     public String toString() {
         String output = "";
         output += super.toString();
+        output += conditionInfo;
         output += list;
         return output;
+    }
+
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public PredicateInfo getConditionInfo() {
+        return conditionInfo;
     }
 
     public static class ManagerBuilder extends AbstractEmployee.Builder<ManagerBuilder> {
 
         private int capacity;
-        private Predicate<Employee> hiringCondition;
+        private PredicateInfo conditionInfo;
 
         public ManagerBuilder(EmployeeRole role) {
             super(EmployeeType.MANAGER, role);
@@ -105,10 +135,11 @@ public class TeamManager extends AbstractEmployee implements Manager {
             return self();
         }
 
-        public ManagerBuilder hiringCondition(Predicate<Employee> predicate) {
-            this.hiringCondition = predicate;
+        public ManagerBuilder hiringCondition(PredicateInfo conditionInfo) {
+            this.conditionInfo = conditionInfo;
             return self();
         }
+
 
         public TeamManager build() {
             return new TeamManager(this);
